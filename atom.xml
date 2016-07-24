@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Hexo</title>
   
-  <link href="/me/atom.xml" rel="self"/>
+  <link href="/atom.xml" rel="self"/>
   
-  <link href="https://zhangfeifei0907.github.io/me/"/>
+  <link href="https://zhangfeifei0907.github.io/"/>
   <updated>2016-07-24T15:42:15.000Z</updated>
-  <id>https://zhangfeifei0907.github.io/me/</id>
+  <id>https://zhangfeifei0907.github.io/</id>
   
   <author>
     <name>John Doe</name>
@@ -17,8 +17,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="https://zhangfeifei0907.github.io/me/2016/07/24/hello-world/"/>
-    <id>https://zhangfeifei0907.github.io/me/2016/07/24/hello-world/</id>
+    <link href="https://zhangfeifei0907.github.io/2016/07/24/hello-world/"/>
+    <id>https://zhangfeifei0907.github.io/2016/07/24/hello-world/</id>
     <published>2016-07-24T15:42:15.000Z</published>
     <updated>2016-07-24T15:42:15.000Z</updated>
     
