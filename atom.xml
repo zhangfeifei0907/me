@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Faye&#39;s Blog</title>
-  <subtitle>这里记录着我的生命曲线</subtitle>
+  <title>Hexo</title>
+  
   <link href="/me/atom.xml" rel="self"/>
   
   <link href="https://zhangfeifei0907.github.io/me/"/>
