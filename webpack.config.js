@@ -6,7 +6,7 @@ var path=require("path");
 const ROOT_PATH = path.resolve(__dirname);
 var ENTRY_PATH=path.resolve(ROOT_PATH,"entry");
 var OUTPUT_PATH=path.resolve(ROOT_PATH,"build/js");
-
+//https://zhangfeifei0907.github.io/me/build/
 
 module.exports = {
     entry:{

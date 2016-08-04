@@ -22,7 +22,19 @@ var Blog=React.createClass({
                 tempArr.pop();
             }
             console.log(tempArr);
-            this.setState({list:tempArr});
+            let sourceArticles=[];
+
+            for(let i=0;i<tempArr.length;i++){
+                let temp=tempArr[i].split("/");
+                let tempObj={id:tempArr[i],tag:temp[2],name:temp[3]};
+                sourceArticles.push(tempObj)
+            }
+            console.log(sourceArticles);
+
+            this.setState({
+                list:tempArr,
+                sourceArticles:sourceArticles
+            });
         }.bind(this));
     },
     render(){
@@ -31,10 +43,21 @@ var Blog=React.createClass({
                 <h1>Faye's Blog</h1>
             </div>
         }
+        let tags=[];
+        for(let i=0;i<this.state.sourceArticles.length;i++){
+            if(tags.toString().indexOf(this.state.sourceArticles[i].tag)==-1){
+                tags.push(this.state.sourceArticles[i].tag);
+            }
+        }
+
+        let tagNodes=tags.map(function(i){
+            return<div key={i}>{i}</div>
+        });
+
 
         return<div>
             <h1>Faye's Blog</h1>
-            testddd
+            {tagNodes}
         </div>
     }
 });
