@@ -8,6 +8,20 @@
 @light_font_color:#C7CED6;
 @orange:#E5995F;
 
+.text-overflow(@int) when(@int >1){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: @int;
+  -webkit-box-orient: vertical;
+  display:-webkit-box;
+}
+
+.text-overflow(@int) when(@int <=1){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 
 body,html
 {
@@ -27,10 +41,20 @@ body,html
   -moz-osx-font-smoothing: grayscale;
 }
 
+hr{
+  margin-bottom: 2em;
+}
+
+
+#blog{
+  height: 100%;
+}
+
 .content{
   width: 1000px;
   background-color: white;
-  min-height: 100vh;
+  height: auto;
+  min-height: 100%;
   margin: 0 auto;
   //box-sizing: border-box;
   //padding: 0 2em;
@@ -64,12 +88,42 @@ body,html
   }
 }
 
+
+.articles{
+  width: 60%;
+  margin: 0 auto;
+  //background-color: yellow;
+}
+
 //单篇博文
-.article{
-  h1{
-    font-size: 1.5em;
-  }
-  p:first-child{
-    color: @light_font_color;
-  }
+.article_title{
+  font-size: 1.4em;
+  margin-bottom: 5px;
+}
+.article_date{
+  font-size: 1em;
+  margin-bottom: 5px;
+  color: #757575;
+  padding-top: 0.2em;
+  padding-bottom: 0.5em;
+}
+.article_content{
+  width: 100%;
+  font-size: 1em;
+  line-height: 1.5em;
+  border-bottom: 1px dashed #E0E0E0;
+  padding-bottom: 2em;
+  margin-bottom: 2.5em;
+  //background-color: yellow;
+  height: 2.5em;
+  overflow: hidden;
+
+  //
+  //overflow : hidden;
+  //text-overflow: ellipsis;
+  //display: -webkit-box;
+  //-webkit-line-clamp: 1;
+  //-webkit-box-orient: vertical;
+
+  //.text-overflow(3);
 }

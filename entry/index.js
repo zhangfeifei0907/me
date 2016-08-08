@@ -4,9 +4,9 @@
 var React=require("react");
 var ReactDOM=require("react-dom");
 var ReactMarkdown=require("react-markdown");
+
 var Order=require("./sort");
 var Loading=require("./loading");
-
 
 require("./../less/index.less");
 
@@ -150,7 +150,14 @@ var Blog=React.createClass({
         let blogListNode,scrollLoading;
         blogListNode=this.state.articleOrderByFilter.map(function(i){
             if(i.detail!=""){
-                return <ReactMarkdown className="article" key={i.id} source={i.detail} />
+                console.log(i);
+                let datestr= i.date.substring(0,4)+"年"+parseInt(i.date.substring(4,6))+"月"+parseInt(i.date.substring(6,8))+"日"
+
+                return<div key={i.id} >
+                    <div className="article_title">{i.title}</div>
+                    <div className="article_date">{datestr}</div>
+                    <ReactMarkdown className="article_content" source={i.detail} />
+                </div>
             }
         },this);
         if(this.state.pageloading){
@@ -163,14 +170,14 @@ var Blog=React.createClass({
             <div className="tags">
                 {tagNodes}
             </div>
-            <input type="button" value="pageloading" onClick={this.testload} />
+
             <hr/>
             <div className="articles">
                 {blogListNode}
                 {scrollLoading}
             </div>
 
-
+            <input type="button" value="pageloading" onClick={this.testload} />
         </div>
     }
 });
