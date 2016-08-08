@@ -8,6 +8,8 @@ var ENTRY_PATH=path.resolve(ROOT_PATH,"entry");
 var OUTPUT_PATH=path.resolve(ROOT_PATH,"build/js");
 //https://zhangfeifei0907.github.io/me/build/
 
+var ReactMarkdown = require('react-markdown');
+
 module.exports = {
     entry:{
         index:[
@@ -26,6 +28,12 @@ module.exports = {
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 query: {presets: ['es2015', 'react']}
+            },
+            { test: /\.md$/, loader: "html!markdown" },
+            { test: /\.json$/, loader: "json" },
+            {
+                test: /\.less$/,
+                loader: "style!css!less"
             }
         ]
     },

@@ -1,0 +1,75 @@
+@import (once) "reset";
+.font_color{
+  color:red;
+}
+
+@background_color:#f7eadb;
+@body_color:#393a41;
+@light_font_color:#C7CED6;
+@orange:#E5995F;
+
+
+body,html
+{
+  background: @background_color;
+  height:100%;
+  color: @body_color;
+  width:100%;
+  max-width: 100%;
+  margin: 0 auto;
+  //min-width: 1366px;
+  line-height: 1.1;
+  font-size: 14px;
+  font-weight: 100;
+  //font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+  font-family: "Microsoft YaHei",tahoma,arial,'Hiragino Sans GB','\5b8b\4f53',sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.content{
+  width: 1000px;
+  background-color: white;
+  min-height: 100vh;
+  margin: 0 auto;
+  //box-sizing: border-box;
+  //padding: 0 2em;
+  padding-left: 2em;
+  padding-right:2em;
+  font-size: 1.1rem;
+
+  .blog_title{
+    text-align: center;
+    font-size: 2.5em;
+    padding-top: 1em;
+    margin-bottom: 0.3em;
+
+  }
+  .blog_sub_title{
+    text-align: center;
+    color: @light_font_color;
+  }
+  .tags{
+    text-align: center;
+
+    span{
+      display: inline-block;
+      vertical-align: top;
+      margin: 1em;
+      cursor: pointer;
+    }
+    span.active{
+      color:@orange;
+    }
+  }
+}
+
+//单篇博文
+.article{
+  h1{
+    font-size: 1.5em;
+  }
+  p:first-child{
+    color: @light_font_color;
+  }
+}

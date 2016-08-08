@@ -1,6 +1,8 @@
-./articles/feeling/a.md
-./articles/life/life2.md
-./articles/front-end/front-end2.md
-./articles/test/README.md
-./articles/test/markdown1.md
-./articles/test/test.md
+./articles/feeling/20160801a.md
+./articles/front-end/20160722front-end2.md
+./articles/front-end/20160726front-end1.md
+./articles/front-end/20160902front-end3.md
+./articles/life/20150829life2.md
+./articles/test/20150707test.md
+./articles/test/20160412README.md
+./articles/test/20160702markdown1.md
