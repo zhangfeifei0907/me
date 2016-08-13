@@ -30,11 +30,11 @@ fs.readdir(ARTICLE_PATH,function(err,files){
 
             //文件
             if(stats.isFile()){
-                //if(getdir(filename) == 'html'){
+                if(getdir(filename) == "md"){
                     var newUrl=remotePath+filename;
                     fileArr.push(newUrl);
                     writeFile(fileArr);
-                //}
+                }
 
             }else if(stats.isDirectory()){
                 // console.log("%s is a directory文件目录", filename);
@@ -45,6 +45,14 @@ fs.readdir(ARTICLE_PATH,function(err,files){
         });
     });
 });
+
+
+//获取后缀名
+function getdir(url){
+    var arr = url.split('.');
+    var len = arr.length;
+    return arr[len-1];
+}
 
 
 
@@ -73,9 +81,12 @@ function readFile(readurl,name){
                 if (err) throw err;
                 //是文件
                 if(stats.isFile()){
-                    var newUrl=remotePath+name+'/'+filename;
-                    fileArr.push(newUrl);
-                    writeFile(fileArr)
+                    if(getdir(filename) == "md"){
+                        var newUrl=remotePath+name+'/'+filename;
+                        fileArr.push(newUrl);
+                        writeFile(fileArr);
+                    }
+                    
                     //是子目录
                 }else if(stats.isDirectory()){
                     var dirName = filename;

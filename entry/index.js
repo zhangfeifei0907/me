@@ -2,34 +2,31 @@
  * Created by Administrator on 2016/8/3.
  */
 var React=require("react");
-var ReactDOM=require("react-dom");
 var ReactMarkdown=require("react-markdown");
+var ReactRouter = require('react-router');
+var hashHistory = ReactRouter.hashHistory;
+
+var Nav=require("./config").Nav;
 
 var Order=require("./sort");
 var Loading=require("./loading");
 
 require("./../less/index.less");
 
-let filterArr=[
-    {id:"all",name:"全部"},
-    {id:"feeling",name:"感悟"},
-    {id:"front-end",name:"前端"},
-    {id:"book_movie",name:"书&电影"}
-    //{id:"works",name:"作品"},
-];
+
 
 var Blog=React.createClass({
     getInitialState(){
         return({
-            list:"",
-            sourceArticles:null,
+            list:"",//总的文件列表
+            // sourceArticles:null,
             articleOrderByFilter:null,
-            filter:"all",
+            filter:Nav[0].id,
+
             pageNum:1,
             pageSize:1,
             pageloading:true,
             allLoading:true
-
         })
     },
     componentDidMount(){
@@ -55,19 +52,61 @@ var Blog=React.createClass({
                     title:temp[3].slice(8,-3),
                     detail:""
                 };
-                sourceArticles.push(tempObj)
+                sourceArticles.push(tempObj);
             }
-            let articleOrderByFilter=sourceArticles.sort(Order.by("date"));
-            this.setState({
-                list:tempArr,
-                sourceArticles:sourceArticles,
-                articleOrderByFilter:articleOrderByFilter,
-                allLoading:false
-            });
+            this.setState({list:sourceArticles});
+            this.loadingArticles(sourceArticles,this.state.filter,this.state.pageNum);
 
-            this.reload(articleOrderByFilter,this.state.pageNum,this.state.pageSize);
 
+        //
+        //     let articleOrderByFilter=sourceArticles.sort(Order.by("date"));
+        //     this.setState({
+        //         list:tempArr,
+        //         sourceArticles:sourceArticles,
+        //         articleOrderByFilter:articleOrderByFilter,
+        //         allLoading:false
+        //     });
+        //
+        //     this.reload(articleOrderByFilter,this.state.pageNum,this.state.pageSize);
+        //
         }.bind(this));
+    },
+    loadingArticles(list,filter,page=1){
+        let articleOrderByFilter=[];
+
+        for(let i=0;i<list.length;i++){
+            if(filter=="all"){
+                articleOrderByFilter.push(list[i]);
+            }else {
+                if(list[i].tag==filter){
+                    articleOrderByFilter.push(list[i]);
+                }
+            }
+        }
+        console.log(list);
+        console.log(articleOrderByFilter);
+
+    },
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps);
+        if(nextProps.location.query.filter!=this.state.filter){
+            this.loadingArticles(this.state.list,nextProps.location.query.filter);
+            this.setState({
+                filter:nextProps.location.query.filter,
+                allLoading:true
+            });
+        }
+    },
+    historyPush(json){
+        var query = this.props.location.query;
+        for(var i in json)
+        {
+            eval("query."+i+"=json[i]");
+        }
+        hashHistory.push({pathname:this.props.location.pathname,query:query});
+    },
+    selectFilterHandle(filter){
+        this.historyPush({filter:filter});
     },
     reload(arrObj,pageNum,pageSize){
         if(arrObj.length<=(pageNum-1)*pageSize){
@@ -120,29 +159,29 @@ var Blog=React.createClass({
         this.reload(this.state.articleOrderByFilter,this.state.pageNum+1,this.state.pageSize);
     },
     render(){
-        if(this.state.allLoading){
-            return<div className="content">
-                <div className="blog_title">菲的博客</div>
-                <div className="blog_sub_title">Step by step,be the chance I want to be here.</div>
-                <Loading> </Loading>
-            </div>
-        }
-
-
-        let tags=[];
-        for(let i=0;i<this.state.sourceArticles.length;i++){
-            if(tags.toString().indexOf(this.state.sourceArticles[i].tag)==-1){
-                tags.push(this.state.sourceArticles[i].tag);
-            }
-        }
-
-        let tagNodes=this.props.filters.map(function(i){
+        let tagNodes=Nav.map(function(i){
             let active="";
             if(i.id==this.state.filter){
                 active="active"
             }
-            return<span className={active} key={i.id} onClick={this.setFilter.bind(null,i.id)}>{i.name}</span>
+            // return<span className={active} key={i.id} onClick={this.setFilter.bind(null,i.id)}>{i.name}</span>
+            return<span className={active} key={i.id} onClick={this.selectFilterHandle.bind(null,i.id)}>{i.name}</span>
         },this);
+        if(this.state.allLoading){
+            return<div className="content">
+                <div className="blog_title">菲的博客</div>
+                <div className="blog_sub_title">一个懂得爱自己的女人</div>
+                <div className="tags">
+                    {tagNodes}
+                </div>
+                <hr/>
+                <Loading> </Loading>
+            </div>
+        }
+
+        console.log(this.state);  
+
+
 
         //this.state.sourceArticles.sort(Order.by("date"));
         //console.log(this.state);
@@ -150,7 +189,7 @@ var Blog=React.createClass({
         let blogListNode,scrollLoading;
         blogListNode=this.state.articleOrderByFilter.map(function(i){
             if(i.detail!=""){
-                console.log(i);
+                // console.log(i);
                 let datestr= i.date.substring(0,4)+"年"+parseInt(i.date.substring(4,6))+"月"+parseInt(i.date.substring(6,8))+"日"
 
                 return<div key={i.id} >
@@ -166,7 +205,7 @@ var Blog=React.createClass({
 
         return<div className="content">
             <div className="blog_title">菲的博客</div>
-            <div className="blog_sub_title">Step by step,be the chance I want to be here.</div>
+            <div className="blog_sub_title">一个懂得爱自己的女人</div>
             <div className="tags">
                 {tagNodes}
             </div>
@@ -182,4 +221,7 @@ var Blog=React.createClass({
     }
 });
 
-ReactDOM.render(<Blog filters={filterArr}/>,document.getElementById('blog'));
+
+
+
+module.exports=Blog;

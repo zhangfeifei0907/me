@@ -1,2 +1,3 @@
+./articles/book_movie/20160413袁剑《大拐点》.md
 ./articles/book_movie/20160729Mindfulness.md
 ./articles/book_movie/20160731创新和有条件的学习.md

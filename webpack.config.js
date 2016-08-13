@@ -12,6 +12,9 @@ var ReactMarkdown = require('react-markdown');
 
 module.exports = {
     entry:{
+        app:[
+            'webpack-hot-middleware/client',
+            ENTRY_PATH+"/app.js"],
         index:[
             'webpack-hot-middleware/client',
             ENTRY_PATH+"/index.js"]
@@ -21,6 +24,7 @@ module.exports = {
         filename: "[name].bundle.js",
         publicPath: 'http://localhost:8080/'
     },
+    devtool: 'eval-source-map',
     module: {
         loaders: [
             { test: /\.css$/, loader: "style!css" },
