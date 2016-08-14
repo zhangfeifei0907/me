@@ -17,6 +17,7 @@ require("./../less/index.less");
 
 var Blog=React.createClass({
     getInitialState(){
+
         return({
             list:"",//总的文件列表
             // sourceArticles:null,
@@ -24,7 +25,7 @@ var Blog=React.createClass({
             filter:Nav[0].id,
 
             pageNum:1,
-            pageSize:1,
+            pageSize:2,
             pageloading:true,
             allLoading:true
         })
@@ -34,13 +35,12 @@ var Blog=React.createClass({
             url:"bloglist.txt",
             async:false
         }).done(function(data) {
-            console.log( "done" );
-            console.log(data);
+            //console.log(data);
             let tempArr=data.toString().split('\n');
             if(tempArr[tempArr.length-1]==""){
                 tempArr.pop();
             }
-            console.log(tempArr);
+            //console.log(tempArr);
             let sourceArticles=[];
 
             for(let i=0;i<tempArr.length;i++){
@@ -55,23 +55,15 @@ var Blog=React.createClass({
                 sourceArticles.push(tempObj);
             }
             this.setState({list:sourceArticles});
-            this.loadingArticles(sourceArticles,this.state.filter,this.state.pageNum);
+            this.loadingArticles(sourceArticles,this.state.filter);
 
+        }.bind(this));
 
-        //
-        //     let articleOrderByFilter=sourceArticles.sort(Order.by("date"));
-        //     this.setState({
-        //         list:tempArr,
-        //         sourceArticles:sourceArticles,
-        //         articleOrderByFilter:articleOrderByFilter,
-        //         allLoading:false
-        //     });
-        //
-        //     this.reload(articleOrderByFilter,this.state.pageNum,this.state.pageSize);
-        //
+        $(document.body).scroll(function(){
+            this.scrollLoading();
         }.bind(this));
     },
-    loadingArticles(list,filter,page=1){
+    loadingArticles(list,filter,pageNum=1){
         let articleOrderByFilter=[];
 
         for(let i=0;i<list.length;i++){
@@ -83,9 +75,13 @@ var Blog=React.createClass({
                 }
             }
         }
-        console.log(list);
-        console.log(articleOrderByFilter);
+        //console.log(list);
+        //console.log(articleOrderByFilter);
 
+        let orderedArticleOrderByFilter=articleOrderByFilter.sort(Order.by("date"));
+
+        this.setState({articleOrderByFilter:articleOrderByFilter});
+        this.reload(orderedArticleOrderByFilter,pageNum);
     },
     componentWillReceiveProps(nextProps){
         console.log(nextProps);
@@ -108,8 +104,10 @@ var Blog=React.createClass({
     selectFilterHandle(filter){
         this.historyPush({filter:filter});
     },
-    reload(arrObj,pageNum,pageSize){
+    reload(arrObj,pageNum){
+        let pageSize=this.state.pageSize;
         if(arrObj.length<=(pageNum-1)*pageSize){
+            this.setState({pageloading:false});
             return;
         }
 
@@ -117,7 +115,7 @@ var Blog=React.createClass({
         if(pageNum==1){
             start=0
         }else {
-            start=(pageNum-1)*pageSize-1;
+            start=(pageNum-1)*pageSize;
         }
 
         if(arrObj.length<pageNum*pageSize){
@@ -131,6 +129,7 @@ var Blog=React.createClass({
             }).done(function(data){
                 arrObj[i].detail=data;
                 if(this.checkLoaded(arrObj,start,end,"detail")){
+                    this.state.allLoading=false;
                     this.state.pageloading=false;
                     this.state.pageNum=pageNum;
                     this.forceUpdate();
@@ -139,10 +138,10 @@ var Blog=React.createClass({
         }
 
     },
-    checkLoaded(arrObj,start,end,tagName,value=""){
+    checkLoaded(arrObj,start,end,tagName){
         let loaded=true;
         for(let i=start;i<end;i++){
-            if(arrObj[i][tagName]==value){
+            if(arrObj[i][tagName]==""){
                 loaded=false;
                 break;
             }
@@ -150,14 +149,24 @@ var Blog=React.createClass({
         return loaded;
 
     },
-    setFilter(id){
-        this.state.filter=id;
-        this.forceUpdate();
+    scrollLoading(){
+        let containerHeight=$(document.body).height();
+        let sHeight = document.body.scrollHeight,
+            sTop = document.body.scrollTop;
+
+        //if( sTop >= sHeight-containerHeight ){
+        if( sHeight-containerHeight==0 ){
+            this.setState({pageloading:true});
+
+            this.reload(
+                this.state.articleOrderByFilter,
+                this.state.pageNum+1
+            );
+
+            console.log("滚动条到底部了");
+        }
     },
-    testload(){
-        console.log("testload");
-        this.reload(this.state.articleOrderByFilter,this.state.pageNum+1,this.state.pageSize);
-    },
+
     render(){
         let tagNodes=Nav.map(function(i){
             let active="";
@@ -170,7 +179,7 @@ var Blog=React.createClass({
         if(this.state.allLoading){
             return<div className="content">
                 <div className="blog_title">菲的博客</div>
-                <div className="blog_sub_title">一个懂得爱自己的女人</div>
+                <div className="blog_sub_title">一个好奇宝宝,甜甜地欣赏着世界纷繁多样的美</div>
                 <div className="tags">
                     {tagNodes}
                 </div>
@@ -179,11 +188,6 @@ var Blog=React.createClass({
             </div>
         }
 
-        console.log(this.state);  
-
-
-
-        //this.state.sourceArticles.sort(Order.by("date"));
         //console.log(this.state);
 
         let blogListNode,scrollLoading;
@@ -203,20 +207,18 @@ var Blog=React.createClass({
             scrollLoading=<Loading> </Loading>;
         }
 
-        return<div className="content">
+        return<div className="content" onScroll={this.scrollLoading}>
             <div className="blog_title">菲的博客</div>
-            <div className="blog_sub_title">一个懂得爱自己的女人</div>
+            <div className="blog_sub_title">一个好奇宝宝,甜甜地欣赏着世界纷繁多样的美</div>
             <div className="tags">
                 {tagNodes}
             </div>
 
             <hr/>
-            <div className="articles">
+            <div className="articles" ref="articles"  >
                 {blogListNode}
                 {scrollLoading}
             </div>
-
-            <input type="button" value="pageloading" onClick={this.testload} />
         </div>
     }
 });
