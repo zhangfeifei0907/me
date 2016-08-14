@@ -1,15 +1,3 @@
-./articles/book_movie/201604010袁剑《大拐点》.md
-./articles/book_movie/201604020袁剑《大拐点》.md
-./articles/book_movie/201604030袁剑《大拐点》.md
-./articles/book_movie/201604040袁剑《大拐点》.md
-./articles/book_movie/201604110袁剑《大拐点》.md
-./articles/book_movie/201604130袁剑《大拐点》.md
 ./articles/book_movie/20160413袁剑《大拐点》.md
-./articles/book_movie/201604170袁剑《大拐点》.md
-./articles/book_movie/201604180袁剑《大拐点》.md
-./articles/book_movie/201604440袁剑《大拐点》.md
-./articles/book_movie/201604450袁剑《大拐点》.md
-./articles/book_movie/201604460袁剑《大拐点》.md
-./articles/book_movie/201604470袁剑《大拐点》.md
 ./articles/book_movie/20160729Mindfulness.md
-./articles/book_movie/20160731创新和有条件的学习.md
+./articles/book_movie/20160813灵魂伴侣——《三体》中的爱.md

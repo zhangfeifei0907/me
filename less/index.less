@@ -1,4 +1,5 @@
 @import (once) "reset";
+//@import (once) "demo";
 .font_color{
   color:red;
 }
@@ -53,7 +54,7 @@ hr{
 }
 
 .content{
-  width: 1000px;
+  width: 900px;
   background-color: white;
   height: auto;
   min-height: 100%;
@@ -62,7 +63,9 @@ hr{
   //padding: 0 2em;
   padding-left: 2em;
   padding-right:2em;
+  padding-bottom: 2em;
   font-size: 1.1rem;
+
 
   .blog_title{
     text-align: center;
@@ -71,10 +74,20 @@ hr{
     margin-bottom: 0.3em;
 
   }
+
+  .blog_title.page{
+    font-size: 1.8em;
+    padding-top: 2.5em;
+  }
   .blog_sub_title{
     text-align: center;
     color: @light_font_color;
   }
+  .blog_sub_title.page{
+    margin-top: 1.2em;
+    margin-bottom: 0.5em;
+  }
+
   .tags{
     text-align: center;
 
@@ -95,9 +108,33 @@ hr{
   width: 60%;
   margin: 0 auto;
   //background-color: yellow;
+
+  .none_article{
+    font-size: 1em;
+    text-align: center;
+    margin-top: 2em;
+    color:@light_font_color;
+  }
 }
 
 //单篇博文
+.article_box{
+  border-bottom: 1px dashed #E0E0E0;
+  margin-bottom: 2.5em;
+  position: relative;
+
+  .detail_button{
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
+    color: @light_font_color;
+    cursor: pointer;
+  }
+  .detail_button:hover{
+    color: @orange;
+  }
+}
+
 .article_title{
   font-size: 1.4em;
   margin-bottom: 5px;
@@ -112,20 +149,125 @@ hr{
 .article_content{
   width: 100%;
   font-size: 1em;
-  line-height: 1.5em;
-  border-bottom: 1px dashed #E0E0E0;
+  line-height: 1.8em;
   padding-bottom: 2em;
   margin-bottom: 2.5em;
   //background-color: yellow;
-  height: 2.5em;
+  height: 2.8em;
   overflow: hidden;
 
-  //
-  //overflow : hidden;
-  //text-overflow: ellipsis;
-  //display: -webkit-box;
-  //-webkit-line-clamp: 1;
-  //-webkit-box-orient: vertical;
+  p{
+    //line-height: 1.8em;
+    text-indent:2em;
+    margin-bottom: 0.5em;
+  }
+}
 
-  //.text-overflow(3);
+
+//blog
+
+.article{
+  width: 65%;
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1.8em;
+  padding-bottom: 2em;
+  padding-top: 1.5em;
+
+  .page-header {
+    color: #fff;
+    background: #191818;
+    margin: 0;
+    padding: 10px 20px;
+  }
+
+  .editor-pane {
+    position: fixed;
+    top: 57px;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    height: auto;
+    overflow: auto;
+    box-shadow: -10px 2px 6px 10px rgba(0,0,0,0.4);
+  }
+
+  .result-pane > div {
+    position: fixed;
+    top: 57px;
+    right: 0;
+    left: 50%;
+    bottom: 0;
+    overflow: auto;
+    padding: 10px;
+    padding-left: 20px;
+    color: #444;
+    font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+    font-size: 16px;
+    line-height: 1.5em;
+  }
+
+  .editor textarea {
+    padding: 20px;
+  }
+
+  .editor-pane textarea {
+    min-height: 500px;
+  }
+
+  .markdown-controls {
+    position: relative;
+    z-index: 5;
+    text-align: right;
+    color: #fff;
+    float: right;
+  }
+
+  .markdown-controls form {
+    background-color: rgba(39, 40, 34, 0.5);
+    margin-right: 20px;
+  }
+
+  .markdown-controls legend {
+    border-bottom: 0;
+    color: #fff;
+    font-size: 1.25em;
+    margin: 0;
+    padding: 10px 0 0 0;
+  }
+
+  .CodeMirror {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+
+    font-size: 16px;
+  }
+
+  pre {
+    border: 1px solid #ccc;
+  }
+
+  blockquote {
+    color: #666;
+    margin: 0;
+    //padding-left: 3em;
+    //border-left: 0.5em #eee solid;
+  }
+  blockquote:before {
+    content: "\201C";
+    font-size: 40px;
+    margin-left: -10px;
+    font-family: georgia,serif;
+    color: #eee;
+  }
+
+  p{
+    text-indent:2em;
+    margin-bottom: 0.5em;
+  }
 }

@@ -1,9 +1,10 @@
 /**
  * Created by Administrator on 2016/8/3.
  */
-var React=require("react");
+//var React=require("react");
 var ReactMarkdown=require("react-markdown");
 var ReactRouter = require('react-router');
+var Link=ReactRouter.Link;
 var hashHistory = ReactRouter.hashHistory;
 
 var Nav=require("./config").Nav;
@@ -18,19 +19,24 @@ require("./../less/index.less");
 var Blog=React.createClass({
     getInitialState(){
 
+        let filter=Nav[0].id;
+        if(this.props.location.query.filter){
+            filter=this.props.location.query.filter;
+        }
         return({
             list:"",//总的文件列表
             // sourceArticles:null,
             articleOrderByFilter:null,
-            filter:Nav[0].id,
+            filter:filter,
 
             pageNum:1,
-            pageSize:2,
+            pageSize:5,
             pageloading:true,
             allLoading:true
         })
     },
     componentDidMount(){
+        console.log("blog componentDidMount");
         $.ajax({
             url:"bloglist.txt",
             async:false
@@ -60,7 +66,10 @@ var Blog=React.createClass({
         }.bind(this));
 
         $(document.body).scroll(function(){
-            this.scrollLoading();
+            if($("#content").length>0){
+                this.scrollLoading();
+            }
+
         }.bind(this));
     },
     loadingArticles(list,filter,pageNum=1){
@@ -75,22 +84,34 @@ var Blog=React.createClass({
                 }
             }
         }
-        //console.log(list);
-        //console.log(articleOrderByFilter);
 
         let orderedArticleOrderByFilter=articleOrderByFilter.sort(Order.by("date"));
 
-        this.setState({articleOrderByFilter:articleOrderByFilter});
-        this.reload(orderedArticleOrderByFilter,pageNum);
+
+        if(orderedArticleOrderByFilter.length<=0){
+            this.setState({
+                articleOrderByFilter:orderedArticleOrderByFilter,
+                allLoading:false
+            });
+            //console.log(this.state);
+
+        }else {
+            this.setState({
+                articleOrderByFilter:orderedArticleOrderByFilter
+            });
+            this.reload(orderedArticleOrderByFilter,pageNum);
+        }
+
     },
     componentWillReceiveProps(nextProps){
-        console.log(nextProps);
+        //console.log(nextProps);
         if(nextProps.location.query.filter!=this.state.filter){
-            this.loadingArticles(this.state.list,nextProps.location.query.filter);
             this.setState({
                 filter:nextProps.location.query.filter,
                 allLoading:true
             });
+            this.loadingArticles(this.state.list,nextProps.location.query.filter);
+
         }
     },
     historyPush(json){
@@ -150,32 +171,40 @@ var Blog=React.createClass({
 
     },
     scrollLoading(){
-        let containerHeight=$(document.body).height();
-        let sHeight = document.body.scrollHeight,
-            sTop = document.body.scrollTop;
 
-        //if( sTop >= sHeight-containerHeight ){
-        if( sHeight-containerHeight==0 ){
-            this.setState({pageloading:true});
+            let containerHeight=$(document.body).height();
+            let sHeight = document.body.scrollHeight,
+                sTop = document.body.scrollTop;
+        //    console.log("containerHeight:"+containerHeight);
+        //    console.log("sHeight:"+sHeight);
+        //    console.log("sTop:"+sTop);
+        //
+        //console.log("$(document).scrollTop:"+$(document.body).scrollTop());
+        //console.log("$(window).height()"+$(window).height());
+        //console.log("$(document).height()"+$(document).height());
 
-            this.reload(
-                this.state.articleOrderByFilter,
-                this.state.pageNum+1
-            );
+            if( 0>=sHeight-containerHeight ){
+                this.setState({pageloading:true});
 
-            console.log("滚动条到底部了");
-        }
+                this.reload(
+                    this.state.articleOrderByFilter,
+                    this.state.pageNum+1
+                );
+
+                //console.log("滚动条到底部了");
+            }
+
+
     },
-
     render(){
         let tagNodes=Nav.map(function(i){
             let active="";
             if(i.id==this.state.filter){
                 active="active"
             }
-            // return<span className={active} key={i.id} onClick={this.setFilter.bind(null,i.id)}>{i.name}</span>
             return<span className={active} key={i.id} onClick={this.selectFilterHandle.bind(null,i.id)}>{i.name}</span>
         },this);
+        //console.log(this.state);
         if(this.state.allLoading){
             return<div className="content">
                 <div className="blog_title">菲的博客</div>
@@ -188,26 +217,35 @@ var Blog=React.createClass({
             </div>
         }
 
-        //console.log(this.state);
+
 
         let blogListNode,scrollLoading;
-        blogListNode=this.state.articleOrderByFilter.map(function(i){
-            if(i.detail!=""){
-                // console.log(i);
-                let datestr= i.date.substring(0,4)+"年"+parseInt(i.date.substring(4,6))+"月"+parseInt(i.date.substring(6,8))+"日"
+        if(this.state.articleOrderByFilter.length<=0){
+            blogListNode=<div className="none_article">暂无文章</div>
+        }else {
+            blogListNode=this.state.articleOrderByFilter.map(function(i){
+                if(i.detail!=""){
+                    // console.log(i);
+                    let datestr= i.date.substring(0,4)+"年"+parseInt(i.date.substring(4,6))+"月"+parseInt(i.date.substring(6,8))+"日"
 
-                return<div key={i.id} >
-                    <div className="article_title">{i.title}</div>
-                    <div className="article_date">{datestr}</div>
-                    <ReactMarkdown className="article_content" source={i.detail} />
-                </div>
-            }
-        },this);
+                    return<div key={i.id} className="article_box">
+                        <div className="article_title">{i.title}</div>
+                        <div className="article_date">{datestr}</div>
+                        <ReactMarkdown className="article_content" source={i.detail} />
+                        <Link to={"/page?title="+i.title+"&date="+datestr+"&url="+i.id} >
+                            <span className="detail_button">阅读全文</span>
+                        </Link>
+                    </div>
+                }
+            },this);
+        }
+
+
         if(this.state.pageloading){
             scrollLoading=<Loading> </Loading>;
         }
 
-        return<div className="content" onScroll={this.scrollLoading}>
+        return<div className="content" id="content">
             <div className="blog_title">菲的博客</div>
             <div className="blog_sub_title">一个好奇宝宝,甜甜地欣赏着世界纷繁多样的美</div>
             <div className="tags">
