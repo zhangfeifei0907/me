@@ -27,7 +27,7 @@ var Page=React.createClass({
         $.ajax({
             url:url
         }).done(function(data) {
-            console.log(data);
+            //console.log(data);
             this.setState({
                 detail:data,
                 loading:false
