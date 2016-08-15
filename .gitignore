@@ -1,1 +1,13 @@
 # Created by .ignore support plugin (hsz.mobi)
+.idea
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/myblog.iml
+.idea/vcs.xml
+.idea/workspace.xml
+archives/
+build/js/jquery-1.9.1.min.js
+build/js/react-dom.min.js
+build/js/react.min.js
+node_modules/
