@@ -1,9 +1,10 @@
 /**
  * Created by Administrator on 2016/8/3.
  */
-var React=require("react");
+//var React=require("react");
 var ReactMarkdown=require("react-markdown");
 var ReactRouter = require('react-router');
+var Link=ReactRouter.Link;
 var hashHistory = ReactRouter.hashHistory;
 
 var Nav=require("./config").Nav;
@@ -17,30 +18,35 @@ require("./../less/index.less");
 
 var Blog=React.createClass({
     getInitialState(){
+
+        let filter=Nav[0].id;
+        if(this.props.location.query.filter){
+            filter=this.props.location.query.filter;
+        }
         return({
             list:"",//总的文件列表
             // sourceArticles:null,
             articleOrderByFilter:null,
-            filter:Nav[0].id,
+            filter:filter,
 
             pageNum:1,
-            pageSize:1,
+            pageSize:5,
             pageloading:true,
             allLoading:true
         })
     },
     componentDidMount(){
+        console.log("blog componentDidMount");
         $.ajax({
             url:"bloglist.txt",
             async:false
         }).done(function(data) {
-            console.log( "done" );
-            console.log(data);
+            //console.log(data);
             let tempArr=data.toString().split('\n');
             if(tempArr[tempArr.length-1]==""){
                 tempArr.pop();
             }
-            console.log(tempArr);
+            //console.log(tempArr);
             let sourceArticles=[];
 
             for(let i=0;i<tempArr.length;i++){
@@ -55,23 +61,18 @@ var Blog=React.createClass({
                 sourceArticles.push(tempObj);
             }
             this.setState({list:sourceArticles});
-            this.loadingArticles(sourceArticles,this.state.filter,this.state.pageNum);
+            this.loadingArticles(sourceArticles,this.state.filter);
 
+        }.bind(this));
 
-        //
-        //     let articleOrderByFilter=sourceArticles.sort(Order.by("date"));
-        //     this.setState({
-        //         list:tempArr,
-        //         sourceArticles:sourceArticles,
-        //         articleOrderByFilter:articleOrderByFilter,
-        //         allLoading:false
-        //     });
-        //
-        //     this.reload(articleOrderByFilter,this.state.pageNum,this.state.pageSize);
-        //
+        $(document.body).scroll(function(){
+            if($("#content").length>0){
+                this.scrollLoading();
+            }
+
         }.bind(this));
     },
-    loadingArticles(list,filter,page=1){
+    loadingArticles(list,filter,pageNum=1){
         let articleOrderByFilter=[];
 
         for(let i=0;i<list.length;i++){
@@ -83,18 +84,34 @@ var Blog=React.createClass({
                 }
             }
         }
-        console.log(list);
-        console.log(articleOrderByFilter);
+
+        let orderedArticleOrderByFilter=articleOrderByFilter.sort(Order.by("date"));
+
+
+        if(orderedArticleOrderByFilter.length<=0){
+            this.setState({
+                articleOrderByFilter:orderedArticleOrderByFilter,
+                allLoading:false
+            });
+            //console.log(this.state);
+
+        }else {
+            this.setState({
+                articleOrderByFilter:orderedArticleOrderByFilter
+            });
+            this.reload(orderedArticleOrderByFilter,pageNum);
+        }
 
     },
     componentWillReceiveProps(nextProps){
-        console.log(nextProps);
+        //console.log(nextProps);
         if(nextProps.location.query.filter!=this.state.filter){
-            this.loadingArticles(this.state.list,nextProps.location.query.filter);
             this.setState({
                 filter:nextProps.location.query.filter,
                 allLoading:true
             });
+            this.loadingArticles(this.state.list,nextProps.location.query.filter);
+
         }
     },
     historyPush(json){
@@ -108,8 +125,10 @@ var Blog=React.createClass({
     selectFilterHandle(filter){
         this.historyPush({filter:filter});
     },
-    reload(arrObj,pageNum,pageSize){
+    reload(arrObj,pageNum){
+        let pageSize=this.state.pageSize;
         if(arrObj.length<=(pageNum-1)*pageSize){
+            this.setState({pageloading:false});
             return;
         }
 
@@ -117,7 +136,7 @@ var Blog=React.createClass({
         if(pageNum==1){
             start=0
         }else {
-            start=(pageNum-1)*pageSize-1;
+            start=(pageNum-1)*pageSize;
         }
 
         if(arrObj.length<pageNum*pageSize){
@@ -131,6 +150,7 @@ var Blog=React.createClass({
             }).done(function(data){
                 arrObj[i].detail=data;
                 if(this.checkLoaded(arrObj,start,end,"detail")){
+                    this.state.allLoading=false;
                     this.state.pageloading=false;
                     this.state.pageNum=pageNum;
                     this.forceUpdate();
@@ -139,10 +159,10 @@ var Blog=React.createClass({
         }
 
     },
-    checkLoaded(arrObj,start,end,tagName,value=""){
+    checkLoaded(arrObj,start,end,tagName){
         let loaded=true;
         for(let i=start;i<end;i++){
-            if(arrObj[i][tagName]==value){
+            if(arrObj[i][tagName]==""){
                 loaded=false;
                 break;
             }
@@ -150,13 +170,31 @@ var Blog=React.createClass({
         return loaded;
 
     },
-    setFilter(id){
-        this.state.filter=id;
-        this.forceUpdate();
-    },
-    testload(){
-        console.log("testload");
-        this.reload(this.state.articleOrderByFilter,this.state.pageNum+1,this.state.pageSize);
+    scrollLoading(){
+
+            let containerHeight=$(document.body).height();
+            let sHeight = document.body.scrollHeight,
+                sTop = document.body.scrollTop;
+        //    console.log("containerHeight:"+containerHeight);
+        //    console.log("sHeight:"+sHeight);
+        //    console.log("sTop:"+sTop);
+        //
+        //console.log("$(document).scrollTop:"+$(document.body).scrollTop());
+        //console.log("$(window).height()"+$(window).height());
+        //console.log("$(document).height()"+$(document).height());
+
+            if( 0>=sHeight-containerHeight ){
+                this.setState({pageloading:true});
+
+                this.reload(
+                    this.state.articleOrderByFilter,
+                    this.state.pageNum+1
+                );
+
+                //console.log("滚动条到底部了");
+            }
+
+
     },
     render(){
         let tagNodes=Nav.map(function(i){
@@ -164,13 +202,13 @@ var Blog=React.createClass({
             if(i.id==this.state.filter){
                 active="active"
             }
-            // return<span className={active} key={i.id} onClick={this.setFilter.bind(null,i.id)}>{i.name}</span>
             return<span className={active} key={i.id} onClick={this.selectFilterHandle.bind(null,i.id)}>{i.name}</span>
         },this);
+        //console.log(this.state);
         if(this.state.allLoading){
             return<div className="content">
                 <div className="blog_title">菲的博客</div>
-                <div className="blog_sub_title">一个懂得爱自己的女人</div>
+                <div className="blog_sub_title">一个好奇宝宝,甜甜地欣赏着世界纷繁多样的美</div>
                 <div className="tags">
                     {tagNodes}
                 </div>
@@ -179,44 +217,46 @@ var Blog=React.createClass({
             </div>
         }
 
-        console.log(this.state);  
 
-
-
-        //this.state.sourceArticles.sort(Order.by("date"));
-        //console.log(this.state);
 
         let blogListNode,scrollLoading;
-        blogListNode=this.state.articleOrderByFilter.map(function(i){
-            if(i.detail!=""){
-                // console.log(i);
-                let datestr= i.date.substring(0,4)+"年"+parseInt(i.date.substring(4,6))+"月"+parseInt(i.date.substring(6,8))+"日"
+        if(this.state.articleOrderByFilter.length<=0){
+            blogListNode=<div className="none_article">暂无文章</div>
+        }else {
+            blogListNode=this.state.articleOrderByFilter.map(function(i){
+                if(i.detail!=""){
+                    // console.log(i);
+                    let datestr= i.date.substring(0,4)+"年"+parseInt(i.date.substring(4,6))+"月"+parseInt(i.date.substring(6,8))+"日"
 
-                return<div key={i.id} >
-                    <div className="article_title">{i.title}</div>
-                    <div className="article_date">{datestr}</div>
-                    <ReactMarkdown className="article_content" source={i.detail} />
-                </div>
-            }
-        },this);
+                    return<div key={i.id} className="article_box">
+                        <div className="article_title">{i.title}</div>
+                        <div className="article_date">{datestr}</div>
+                        <ReactMarkdown className="article_content" source={i.detail} />
+                        <Link to={"/page?title="+i.title+"&date="+datestr+"&url="+i.id} >
+                            <span className="detail_button">阅读全文</span>
+                        </Link>
+                    </div>
+                }
+            },this);
+        }
+
+
         if(this.state.pageloading){
             scrollLoading=<Loading> </Loading>;
         }
 
-        return<div className="content">
+        return<div className="content" id="content">
             <div className="blog_title">菲的博客</div>
-            <div className="blog_sub_title">一个懂得爱自己的女人</div>
+            <div className="blog_sub_title">一个好奇宝宝,甜甜地欣赏着世界纷繁多样的美</div>
             <div className="tags">
                 {tagNodes}
             </div>
 
             <hr/>
-            <div className="articles">
+            <div className="articles" ref="articles"  >
                 {blogListNode}
                 {scrollLoading}
             </div>
-
-            <input type="button" value="pageloading" onClick={this.testload} />
         </div>
     }
 });

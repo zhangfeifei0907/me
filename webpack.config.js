@@ -13,18 +13,18 @@ var ReactMarkdown = require('react-markdown');
 module.exports = {
     entry:{
         app:[
-            'webpack-hot-middleware/client',
-            ENTRY_PATH+"/app.js"],
-        index:[
-            'webpack-hot-middleware/client',
-            ENTRY_PATH+"/index.js"]
+            //'webpack-hot-middleware/client',
+            ENTRY_PATH+"/app.js"]
+        //index:[
+            //'webpack-hot-middleware/client',
+            //ENTRY_PATH+"/index.js"]
     },
     output: {
         path: OUTPUT_PATH,
         filename: "[name].bundle.js",
         publicPath: 'http://localhost:8080/'
     },
-    devtool: 'eval-source-map',
+    //devtool: 'eval-source-map',
     module: {
         loaders: [
             { test: /\.css$/, loader: "style!css" },
@@ -33,7 +33,7 @@ module.exports = {
                 exclude: /node_modules/,
                 query: {presets: ['es2015', 'react']}
             },
-            { test: /\.md$/, loader: "html!markdown" },
+            //{ test: /\.md$/, loader: "html!markdown" },
             { test: /\.json$/, loader: "json" },
             {
                 test: /\.less$/,
@@ -45,11 +45,11 @@ module.exports = {
         new webpack.optimize.OccurenceOrderPlugin(), // recommanded by webpack
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin() // recommanded by webpack
-    ]
-    // externals: {
-    //     "jquery": "jQuery",//[,"./assets/src/vendor/jquery-1.9.1.min.js"]
-    //     "react": "React",
-    //     "react-dom": "ReactDOM"
-    //     // "react-addons-css-transition-group":"react-addons-css-transition-group"
-    // }
+    ],
+     externals: {
+         "jquery": "jQuery",//[,"./assets/src/vendor/jquery-1.9.1.min.js"]
+         "react": "React",
+         "react-dom": "ReactDOM"
+         // "react-addons-css-transition-group":"react-addons-css-transition-group"
+     }
 };
