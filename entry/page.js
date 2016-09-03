@@ -19,7 +19,7 @@ var Page=React.createClass({
         });
     },
     componentDidMount(){
-        console.log(" Page componentDidMount");
+        console.log(" Page componentDidMountdff");
 
 
         let url=this.state.url;
@@ -41,6 +41,7 @@ var Page=React.createClass({
         }
 
         return<div className="content">
+            <a className="backToIndex" href="index.html">返回博客主页 </a>
                 <div className="blog_title page">{this.state.title}</div>
                 <div className="blog_sub_title page">{this.state.date}</div>
                 <div className="article"  >

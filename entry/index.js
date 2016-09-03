@@ -229,7 +229,10 @@ var Blog=React.createClass({
                     let datestr= i.date.substring(0,4)+"年"+parseInt(i.date.substring(4,6))+"月"+parseInt(i.date.substring(6,8))+"日"
 
                     return<div key={i.id} className="article_box">
-                        <div className="article_title">{i.title}</div>
+                        <Link to={"/page?title="+i.title+"&date="+datestr+"&url="+i.id} >
+                            <div className="article_title">{i.title}</div>
+                        </Link>
+
                         <div className="article_date">{datestr}</div>
                         <ReactMarkdown className="article_content" source={i.detail} />
                         <Link to={"/page?title="+i.title+"&date="+datestr+"&url="+i.id} >

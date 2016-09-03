@@ -52,7 +52,16 @@ hr{
 #blog{
   height: 100%;
 }
+a{
+  text-decoration: none;
+}
+a.backToIndex{
+  color: @orange;
 
+  position: absolute;
+  top: 1.5em;
+  left: 1.5em;
+}
 .content{
   width: 900px;
   background-color: white;
@@ -65,6 +74,7 @@ hr{
   padding-right:2em;
   padding-bottom: 2em;
   font-size: 1.1rem;
+  position: relative;
 
 
   .blog_title{
@@ -126,7 +136,7 @@ hr{
   .detail_button{
     position: absolute;
     right: 1em;
-    bottom: 1em;
+    bottom: 0.8em;
     color: @light_font_color;
     cursor: pointer;
   }
@@ -138,6 +148,8 @@ hr{
 .article_title{
   font-size: 1.4em;
   margin-bottom: 5px;
+  color:@body_color ;
+
 }
 .article_date{
   font-size: 1em;
@@ -153,7 +165,7 @@ hr{
   padding-bottom: 2em;
   margin-bottom: 2.5em;
   //background-color: yellow;
-  height: 2.8em;
+  height: 3em;
   overflow: hidden;
 
   p{
