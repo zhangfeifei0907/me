@@ -22,9 +22,10 @@ module.exports = {
     output: {
         path: OUTPUT_PATH,
         filename: "[name].bundle.js",
-        //publicPath: 'http://localhost:8080/'
+        publicPath: 'http://localhost:8080/'
     },
     //devtool: 'eval-source-map',
+    cache: false,
     module: {
         loaders: [
             { test: /\.css$/, loader: "style!css" },

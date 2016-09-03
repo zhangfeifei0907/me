@@ -10,20 +10,28 @@ var Loading=require("./loading");
 
 var Page=React.createClass({
     getInitialState(){
+        //console.log(this.props.location.query.url);
+        let temp=this.props.location.query.data.split("/");
+        let filename=temp[3];
+        //console.log(filename);
+        let tempTitle=filename.substring(8).split(".");
+        let title=tempTitle[0];
+        let date=filename.substring(0,8);
+        let dateStr=date.substring(0,4)+'年'+parseInt(date.substring(4,6))+'月'+parseInt(date.substring(6,8))+'日';
         return({
-            url:this.props.location.query.url,
-            title:this.props.location.query.title,
-            date:this.props.location.query.date,
+            url:this.props.location.query.data,
+            title:title,
+            date:dateStr,
             detail:"",
             loading:true
         });
     },
     componentDidMount(){
-        console.log(" Page componentDidMountdff");
+        //console.log(" Page componentDidMountdff");
 
 
         let url=this.state.url;
-        console.log(this.state);
+        //console.log(this.state);
         $.ajax({
             url:url
         }).done(function(data) {

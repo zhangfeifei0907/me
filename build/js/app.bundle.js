@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5745b01a6e5d32604be1"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f3cfb0e20fc7d6be7df3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -570,7 +570,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "http://localhost:8080/";
 
 /******/ 	// __webpack_hash__
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
@@ -7193,7 +7193,7 @@
 	        } else {
 	            blogListNode = this.state.articleOrderByFilter.map(function (i) {
 	                if (i.detail != "") {
-	                    // console.log(i);
+	                    //console.log(i);
 	                    var datestr = i.date.substring(0, 4) + "年" + parseInt(i.date.substring(4, 6)) + "月" + parseInt(i.date.substring(6, 8)) + "日";
 
 	                    return React.createElement(
@@ -7201,7 +7201,7 @@
 	                        { key: i.id, className: "article_box" },
 	                        React.createElement(
 	                            Link,
-	                            { to: "/page?title=" + i.title + "&date=" + datestr + "&url=" + i.id },
+	                            { to: "/page?data=" + i.id },
 	                            React.createElement(
 	                                "div",
 	                                { className: "article_title" },
@@ -7216,7 +7216,7 @@
 	                        React.createElement(ReactMarkdown, { className: "article_content", source: i.detail }),
 	                        React.createElement(
 	                            Link,
-	                            { to: "/page?title=" + i.title + "&date=" + datestr + "&url=" + i.id },
+	                            { to: "/page?data=" + i.id },
 	                            React.createElement(
 	                                "span",
 	                                { className: "detail_button" },
@@ -7286,19 +7286,28 @@
 	var Page = React.createClass({
 	    displayName: "Page",
 	    getInitialState: function getInitialState() {
+	        //console.log(this.props.location.query.url);
+	        var temp = this.props.location.query.data.split("/");
+	        var filename = temp[3];
+	        //console.log(filename);
+	        var tempTitle = filename.substring(8).split(".");
+	        var title = tempTitle[0];
+	        var date = filename.substring(0, 8);
+	        var dateStr = date.substring(0, 4) + '年' + parseInt(date.substring(4, 6)) + '月' + parseInt(date.substring(6, 8)) + '日';
 	        return {
-	            url: this.props.location.query.url,
-	            title: this.props.location.query.title,
-	            date: this.props.location.query.date,
+	            url: this.props.location.query.data,
+	            title: title,
+	            date: dateStr,
 	            detail: "",
 	            loading: true
 	        };
 	    },
 	    componentDidMount: function componentDidMount() {
-	        console.log(" Page componentDidMountdff");
+	        //console.log(" Page componentDidMountdff");
+
 
 	        var url = this.state.url;
-	        console.log(this.state);
+	        //console.log(this.state);
 	        $.ajax({
 	            url: url
 	        }).done(function (data) {
