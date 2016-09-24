@@ -5,3 +5,4 @@
 ./articles/book_movie/20160908《Marva Collins' Way》.md
 ./articles/feeling/20160815我想变成这样的女人.md
 ./articles/feeling/20160903第一次滑单排轮滑.md
+./articles/feeling/20160924哲学思考：我是谁.md
