@@ -36,7 +36,7 @@ var Blog=React.createClass({
         })
     },
     componentDidMount(){
-        console.log("blog componentDidMount");
+        //console.log("blog componentDidMount");
         $.ajax({
             url:"bloglist.txt",
             async:false
@@ -175,14 +175,6 @@ var Blog=React.createClass({
             let containerHeight=$(document.body).height();
             let sHeight = document.body.scrollHeight,
                 sTop = document.body.scrollTop;
-        //    console.log("containerHeight:"+containerHeight);
-        //    console.log("sHeight:"+sHeight);
-        //    console.log("sTop:"+sTop);
-        //
-        //console.log("$(document).scrollTop:"+$(document.body).scrollTop());
-        //console.log("$(window).height()"+$(window).height());
-        //console.log("$(document).height()"+$(document).height());
-
             if( 0>=sHeight-containerHeight ){
                 this.setState({pageloading:true});
 

@@ -10,7 +10,7 @@ var Loading=require("./loading");
 
 var Page=React.createClass({
     getInitialState(){
-        console.log(this.props.params.id);
+        //console.log(this.props.params.id);
         let date=this.props.params.id;
         let dateStr=date.substring(0,4)+'年'+parseInt(date.substring(4,6))+'月'+parseInt(date.substring(6,8))+'日';
         return({
@@ -22,13 +22,13 @@ var Page=React.createClass({
         });
     },
     componentDidMount(){
-        console.log(" Page componentDidMountdff");
+        //console.log(" Page componentDidMountdff");
         let url;
         $.ajax({
             url:"bloglist.txt",
             async:false
         }).done(function(data) {
-            console.log(data);
+            //console.log(data);
             let tempArr=data.toString().split('\n');
             if(tempArr[tempArr.length-1]==""){
                 tempArr.pop();
@@ -55,8 +55,8 @@ var Page=React.createClass({
             tempTitle=tempTitle.substring(8,tempTitle.length-3);
 
 
-            console.log(tempStr);
-            console.log(tempTitle);
+            //console.log(tempStr);
+            //console.log(tempTitle);
             this.setState({
                 title:tempTitle,
                 detail:data,

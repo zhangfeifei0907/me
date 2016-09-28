@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "af92ee5207af0c2d178d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2ebb0be9eecfeb1ee093"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -9489,7 +9489,7 @@
 	        };
 	    },
 	    componentDidMount: function componentDidMount() {
-	        console.log("blog componentDidMount");
+	        //console.log("blog componentDidMount");
 	        $.ajax({
 	            url: "bloglist.txt",
 	            async: false
@@ -9629,14 +9629,6 @@
 	        var containerHeight = $(document.body).height();
 	        var sHeight = document.body.scrollHeight,
 	            sTop = document.body.scrollTop;
-	        //    console.log("containerHeight:"+containerHeight);
-	        //    console.log("sHeight:"+sHeight);
-	        //    console.log("sTop:"+sTop);
-	        //
-	        //console.log("$(document).scrollTop:"+$(document.body).scrollTop());
-	        //console.log("$(window).height()"+$(window).height());
-	        //console.log("$(document).height()"+$(document).height());
-
 	        if (0 >= sHeight - containerHeight) {
 	            this.setState({ pageloading: true });
 
@@ -9790,7 +9782,7 @@
 	var Page = React.createClass({
 	    displayName: "Page",
 	    getInitialState: function getInitialState() {
-	        console.log(this.props.params.id);
+	        //console.log(this.props.params.id);
 	        var date = this.props.params.id;
 	        var dateStr = date.substring(0, 4) + '年' + parseInt(date.substring(4, 6)) + '月' + parseInt(date.substring(6, 8)) + '日';
 	        return {
@@ -9802,13 +9794,13 @@
 	        };
 	    },
 	    componentDidMount: function componentDidMount() {
-	        console.log(" Page componentDidMountdff");
+	        //console.log(" Page componentDidMountdff");
 	        var url = void 0;
 	        $.ajax({
 	            url: "bloglist.txt",
 	            async: false
 	        }).done(function (data) {
-	            console.log(data);
+	            //console.log(data);
 	            var tempArr = data.toString().split('\n');
 	            if (tempArr[tempArr.length - 1] == "") {
 	                tempArr.pop();
@@ -9833,8 +9825,8 @@
 	            var tempTitle = tempStr[tempStr.length - 1];
 	            tempTitle = tempTitle.substring(8, tempTitle.length - 3);
 
-	            console.log(tempStr);
-	            console.log(tempTitle);
+	            //console.log(tempStr);
+	            //console.log(tempTitle);
 	            this.setState({
 	                title: tempTitle,
 	                detail: data,
