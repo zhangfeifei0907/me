@@ -14,10 +14,10 @@ module.exports = {
     entry:{
         app:[
             //'webpack-hot-middleware/client',
-            ENTRY_PATH+"/app.js"]
-        //index:[
+            ENTRY_PATH+"/app.js"],
+        test:[
             //'webpack-hot-middleware/client',
-            //ENTRY_PATH+"/index.js"]
+            ENTRY_PATH+"/test.js"]
     },
     output: {
         path: OUTPUT_PATH,
