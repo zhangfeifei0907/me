@@ -4,10 +4,29 @@
   color:red;
 }
 
+//动画与变形
+.transition(@style)
+{
+  -webkit-transition:@style;
+  -moz-transition:@style;
+  -o-transition:@style;
+  -ms-transition:@style;
+  transition:@style;
+}
+.transform(@style)
+{
+  -webkit-transform:@style;
+  -moz-transform:@style;
+  -o-transform:@style;
+  -ms-transform:@style;
+  transform:@style;
+}
+
 @background_color:#f7eadb;
 @body_color:#393a41;
 @light_font_color:#C7CED6;
 @orange:#E5995F;
+
 
 .text-overflow(@int) when(@int >1){
   overflow: hidden;
@@ -66,7 +85,7 @@ a.backToIndex{
   width: 900px;
   background-color: white;
   height: auto;
-  min-height: 100%;
+  min-height: 100vh;
   margin: 0 auto;
   //box-sizing: border-box;
   //padding: 0 2em;
@@ -77,6 +96,9 @@ a.backToIndex{
   position: relative;
 
 
+  .index_header{
+    position: relative;
+  }
   .blog_title{
     text-align: center;
     font-size: 2.5em;
@@ -113,6 +135,13 @@ a.backToIndex{
   }
 }
 
+//手机的现示的导航条
+.operate_nav{
+  display: none;
+  .operate_nav_mobile_icon{
+    display: none;
+  }
+}
 
 .articles{
   width: 60%;
@@ -124,6 +153,10 @@ a.backToIndex{
     text-align: center;
     margin-top: 2em;
     color:@light_font_color;
+  }
+
+  >.article_box:last-child{
+    border-bottom: 1px solid rgba(0,0,0,0);
   }
 }
 
@@ -177,6 +210,10 @@ a.backToIndex{
 
 
 //blog
+
+.blog_loading{
+  padding-top: 10em;
+}
 
 .article{
   width: 65%;
@@ -282,4 +319,263 @@ a.backToIndex{
     text-indent:2em;
     margin-bottom: 0.5em;
   }
+}
+
+
+@phone_black:rgb(16,33,25);
+@phone_green_font:#388E3C;
+@phone_green_font_deep:#1B5E20;
+@phone_green_bg:rgb(58,184,90);
+@phone_grey:#9E9E9E;
+@main-font-login-fade:#ebebeb;
+
+@back_arrow_grey:#E0E0E0;
+
+@media screen and (max-width:600px) {
+  body,html{
+    background-color: white;
+    color: @phone_black;
+  }
+
+  //index css
+  .content{
+    width: 100%;
+    padding-left: 0;
+    padding-right:0;
+
+    .blog_title{
+      //font-size: 2em;
+      padding-top: 1.8em;
+      color: white;
+    }
+    .blog_sub_title{
+      font-size: 1.1em;
+      padding: 0 1em;
+      line-height: 1.5em;
+      color: white;
+    }
+    .tags{
+      display: none;
+    }
+    .articles{
+      width: 82%;
+      .article_box{
+        border-bottom: 1px dashed @phone_grey;
+
+        .article_title{
+          font-size: 1.5em;
+        }
+
+        .article_content{
+          margin-bottom: 3em;
+          font-size: 1.1em;
+        }
+
+        .detail_button{
+          bottom: 1.3em;
+          color: @phone_grey;
+        }
+      }
+      >.article_box:last-child{
+        border-bottom: 1px solid rgba(0,0,0,0) !important;
+      }
+    }
+    .index_header{
+      background-image: url("../build/img/bj.png");
+      background-repeat:no-repeat;
+      background-size: cover;
+      margin-bottom: 2.5em;
+      padding-bottom: 2em;
+    }
+
+    .article_title{
+      color: @phone_green_font;
+    }
+    .article_date{
+      color: @phone_grey;
+    }
+
+    .article_box>.detail_button:hover,.article_box>.detail_button:visited{
+      color: @phone_green_font_deep;
+    }
+
+
+
+    >hr{
+      display: none;
+    }
+  }
+
+  //手机的导航条
+  .operate_nav{
+    display:block;
+    background-color: rgba(0,0,0,0.7);
+    width: 100%;
+    height: 2em;
+    line-height: 2em;
+    text-align: left;
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    .nav_item{
+      display: none;
+    }
+    .nav_item.visible{
+      display: block;
+      padding-bottom: 1em;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      //background-color: rgba(0,0,0,0.5);
+      padding-top: 2em;
+
+      >span{
+        display:block ;
+        line-height: 2.5em;
+        width: 100%;
+        text-align: center;
+      }
+      >span.active{
+        color:@phone_green_bg ;
+      }
+    }
+
+    //导航右侧操作按钮
+    .operate_nav_mobile_icon{
+      display: inline-block;
+      height: 2em;
+      width: 2em;
+      position: absolute;
+      top: 0;
+      right: 1em;
+
+      >span{
+        position:absolute;
+        width: 100%;
+        height:100%;
+        top:0;
+        bottom: 0;
+        display: block;
+      }
+      >span.line{
+        .transition(all 0.25s  cubic-bezier(0.4, 0.01, 0.165, 0.99));
+      }
+
+      >span>span{
+        position: absolute;
+        width: 20px;
+        left:50%;
+        top:50%;
+        margin-top: -1px;
+        margin-left:-10px;
+        height:3px;
+        background-color: white;
+
+      }
+
+      //画上横线
+      >span>span.up{
+        .transform(translateY(-3.5px));
+      }
+
+      //画下横线
+      >span>span.down{
+        .transform(translateY(3.5px));
+      }
+    }
+
+    //导航右侧操作按钮--选中后
+    .operate_nav_mobile_icon.selected{
+      >span.line.up{
+        .transform(rotate(135deg));
+        >span{
+          .transform(translateY(0));
+        }
+      }
+      >span.line.down{
+        .transform(rotate(45deg));
+        >span{
+          .transform(translateY(0));
+        }
+      }
+    }
+
+    //左边返回键
+    .back_button{
+      box-sizing: border-box;
+      display: inline-block;
+      padding-left: 0.5em;
+      padding-top: 0.2em;
+      width: 50px;
+      height: 50px;
+      //background-color: red;
+    }
+    .back_button:before{
+      content:"";
+      display: block;
+      height: 0;
+      width: 18px;
+      border-bottom: 3px solid @back_arrow_grey;
+      .transform(translateY(7px) rotate(-40deg));
+
+    }
+
+    .back_button:after{
+      content:"";
+      display: block;
+      height: 0;
+      width: 18px;
+      border-bottom: 3px solid @back_arrow_grey;
+      .transform(translateY(14px) rotate(40deg));
+    }
+
+  }
+
+  .operate_nav.selected{
+    //background-color: rgba(0,0,0,0);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: auto;
+  }
+
+  //blogpage css
+  .content.page{
+    .blog_title{
+      color: @phone_green_font;
+    }
+    .blog_sub_title{
+      color: @phone_grey;
+    }
+
+    .blog_sub_title.page{
+      margin-top: 0;
+    }
+    .article{
+      width:80%;
+      font-size: 1.1em;
+      padding-top: 0.3em;
+    }
+
+    .operate_nav.selected{
+      bottom: auto;
+      height: 13em;
+    }
+
+  }
+
+
+
+
+
+  //loading css
+  .spinner > div{
+    background-color: @phone_green_bg !important;
+  }
+  
+
+
 }

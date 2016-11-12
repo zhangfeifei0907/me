@@ -6,4 +6,6 @@
 ./articles/feeling/20160815我想变成这样的女人.md
 ./articles/feeling/20160903第一次滑单排轮滑.md
 ./articles/feeling/20160924我是谁.md
+./articles/feeling/20161105河源连平一天游趣事集.md
 ./articles/feeling/20161112选择成为聪明的人.md
+./articles/front-end/20161007用display table-cell实现 等高的两栏布局.md

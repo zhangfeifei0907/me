@@ -12,6 +12,7 @@ var hashHistory = ReactRouter.hashHistory;
 
 var Index=require("./index");
 var Page=require("./page");
+var PageCanBack=require("./page_can_back");
 //var Page=React.createClass({
 //    render(){
 //        return<div>
@@ -54,6 +55,7 @@ ReactDOM.render(
         <Route path="/" component={App}>
             <IndexRoute component={Index} />
             <Route path="page/:id" component={Page}></Route>
+            <Route path="blogs" component={PageCanBack}></Route>
         </Route>
 
     </Router>,

@@ -6,7 +6,9 @@ var path=require("path");
 const ROOT_PATH = path.resolve(__dirname);
 var ENTRY_PATH=path.resolve(ROOT_PATH,"entry");
 var OUTPUT_PATH=path.resolve(ROOT_PATH,"build/js");
-//https://zhangfeifei0907.github.io/me/build/
+//https://zhangfeifei0907.github.io/me/build/index.html
+//https://zhangfeifei0907.github.io/me/build/index.html#/page/20161112     发朋友圈
+
 
 var ReactMarkdown = require('react-markdown');
 
@@ -39,6 +41,10 @@ module.exports = {
             {
                 test: /\.less$/,
                 loader: "style!css!less"
+            },
+            {
+                test: /\.(png|jpg)$/,
+                loader: 'url?limit=25000'
             }
         ]
     },

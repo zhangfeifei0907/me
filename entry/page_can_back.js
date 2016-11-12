@@ -8,18 +8,25 @@ var Loading=require("./loading");
 let OperateNav=require("./operate_nav");
 
 
-var Page=React.createClass({
+var PageCanBack=React.createClass({
     getInitialState(){
         //console.log(this.props.params.id);
-        let date=this.props.params.id;
+        //console.log(this.getQuery("id"));
+        //console.log(this.getQuery("filter"));
+        let date=this.getQuery("id");
         let dateStr=date.substring(0,4)+'年'+parseInt(date.substring(4,6))+'月'+parseInt(date.substring(6,8))+'日';
         return({
             id:date,
             title:"",
+            filter:this.getQuery("filter"),
             date:dateStr,
             detail:"",
             loading:true
         });
+    },
+    getQuery(type,defaultValue,props){
+        var mProps = props || this.props;
+        return mProps.location.query.hasOwnProperty(type)?eval('mProps.location.query.'+type):defaultValue;
     },
     componentDidMount(){
         //console.log(" Page componentDidMountdff");
@@ -65,19 +72,26 @@ var Page=React.createClass({
         }.bind(this));
 
     },
-    goto(filter){
-      //console.log(filter);
+    selectFilterHandle(filter){
+        //console.log(filter);
         window.location.href='./index.html#/?filter='+filter;
     },
     render(){
+        console.log(this.state.filter);
         if(this.state.loading){
-            return<Loading> </Loading>;
+            return<div>
+                    <div className="blog_loading">
+                        <Loading> </Loading>
+                    </div>
+
+                </div>;
         }
 
+
         return<div className="content page">
-                <OperateNav selectFilterHandle={this.goto} />
-                <div className="blog_title page">{this.state.title}</div>
-                <div className="blog_sub_title page">{this.state.date}</div>
+            <OperateNav filter={this.state.filter} selectFilterHandle={this.selectFilterHandle} filter={this.state.filter} back={true}/>
+            <div className="blog_title page">{this.state.title}</div>
+            <div className="blog_sub_title page">{this.state.date}</div>
             <div className="article"  >
                 <ReactMarkdown source={this.state.detail} softBreak="  "/>
             </div>
@@ -87,4 +101,4 @@ var Page=React.createClass({
 
 
 
-module.exports=Page;
+module.exports=PageCanBack;

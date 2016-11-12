@@ -8,9 +8,11 @@ var Link=ReactRouter.Link;
 var hashHistory = ReactRouter.hashHistory;
 
 var Nav=require("./config").Nav;
+var OperateNav=require("./operate_nav");
 
 var Order=require("./sort");
 var Loading=require("./loading");
+
 
 require("./../less/index.less");
 
@@ -20,6 +22,7 @@ var Blog=React.createClass({
     getInitialState(){
 
         let filter=Nav[0].id;
+        console.log(this.props.location.query.filter);
         if(this.props.location.query.filter){
             filter=this.props.location.query.filter;
         }
@@ -221,13 +224,13 @@ var Blog=React.createClass({
                     let datestr= i.date.substring(0,4)+"年"+parseInt(i.date.substring(4,6))+"月"+parseInt(i.date.substring(6,8))+"日"
 
                     return<div key={i.id} className="article_box">
-                        <Link to={"/page/"+i.date} >
+                        <Link to={"/blogs?id="+i.date+"&filter="+this.state.filter}>
                             <div className="article_title">{i.title}</div>
                         </Link>
 
                         <div className="article_date">{datestr}</div>
                         <ReactMarkdown className="article_content" source={i.detail} />
-                        <Link to={"/page/"+i.date} >
+                        <Link to={"/blogs?id="+i.date+"&filter="+this.state.filter} >
                             <span className="detail_button">阅读全文</span>
                         </Link>
                     </div>
@@ -241,10 +244,13 @@ var Blog=React.createClass({
         }
 
         return<div className="content" id="content">
-            <div className="blog_title">菲的博客</div>
-            <div className="blog_sub_title">一个好奇宝宝,甜甜地欣赏着世界纷繁多样的美</div>
-            <div className="tags">
-                {tagNodes}
+            <div className="index_header">
+                <OperateNav selectFilterHandle={this.selectFilterHandle} filter={this.state.filter}/>
+                <div className="blog_title">菲的博客</div>
+                <div className="blog_sub_title">一个好奇宝宝,甜甜地欣赏着世界纷繁多样的美</div>
+                <div className="tags">
+                    {tagNodes}
+                </div>
             </div>
 
             <hr/>
@@ -257,6 +263,6 @@ var Blog=React.createClass({
 });
 
 
-
+//onClick={this.selectFilterHandle.bind(null,i.id)}
 
 module.exports=Blog;
