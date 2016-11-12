@@ -3,7 +3,7 @@
 ./articles/book_movie/20160813灵魂伴侣——《三体》中的爱.md
 ./articles/book_movie/20160906《三体》有温度的宇宙科幻小说.md
 ./articles/book_movie/20160908《Marva Collins' Way》.md
-./articles/feeling/2016-11-12选择成为聪明的人.md
 ./articles/feeling/20160815我想变成这样的女人.md
 ./articles/feeling/20160903第一次滑单排轮滑.md
 ./articles/feeling/20160924我是谁.md
+./articles/feeling/20161112选择成为聪明的人.md
